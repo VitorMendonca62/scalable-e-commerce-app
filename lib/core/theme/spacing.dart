@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppThemePage {
   static const horizontalPadding = 22.0;
-  static const verticalPadding = 8.0;
+  static const verticalPadding = 16.0;
   static const inputSpacing = 22.0;
 }
 
