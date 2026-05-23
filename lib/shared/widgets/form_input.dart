@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scalable_e_commerce_app/core/theme/colors.dart';
 import 'package:scalable_e_commerce_app/core/theme/spacing.dart';
+import 'package:scalable_e_commerce_app/core/theme/typography.dart';
 
 class FormInput extends StatefulWidget {
   const FormInput({
@@ -46,16 +46,16 @@ class _FormInputState extends State<FormInput> {
       children: [
         Text(
           widget.labelText,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: AppColors.foreground,
-            fontSize: 16,
+          style: AppTypography.titleSmall.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 4),
         TextFormField(
           controller: widget.controller,
-          style: const TextStyle(color: AppColors.foreground, fontSize: 16),
+          style: AppTypography.bodyLarge.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           obscureText: obscureText,
           validator: widget.validator,
           keyboardType: widget.keyboardType,
@@ -74,6 +74,7 @@ class _FormInputState extends State<FormInput> {
                     },
                     icon: Icon(
                       obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   )
                 : null,
@@ -85,40 +86,42 @@ class _FormInputState extends State<FormInput> {
             isDense: true,
 
             hintText: widget.hintText,
-            hintStyle: const TextStyle(color: AppColors.mutedForeground),
+            hintStyle: AppTypography.bodyMedium.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: AppColors.foreground,
+                color: Theme.of(context).colorScheme.outline,
                 width: AppBorder.width,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: AppColors.ring,
+                color: Theme.of(context).colorScheme.primary,
                 width: AppBorder.focusedWidth,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: AppColors.destructive,
+                color: Theme.of(context).colorScheme.error,
                 width: AppBorder.width,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: AppColors.destructive,
+                color: Theme.of(context).colorScheme.onError,
                 width: AppBorder.focusedWidth,
               ),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: AppColors.foreground,
+                color: Theme.of(context).colorScheme.outlineVariant,
                 width: AppBorder.width,
               ),
             ),

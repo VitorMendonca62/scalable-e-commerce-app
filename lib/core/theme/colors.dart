@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  AppColors._();
-
   // Base
   static const Color background = Color(0xFFFFFFFF);
   static const Color foreground = Color(0xFF252525);
-
-  // Card
-  static const Color card = Color(0xFFFFFFFF);
-  static const Color cardForeground = Color(0xFF252525);
 
   // Popover
   static const Color popover = Color(0xFFFFFFFF);
@@ -27,18 +21,13 @@ class AppColors {
   static const Color muted = Color(0xFFF5F5F5);
   static const Color mutedForeground = Color(0xFF8E8E8E);
 
-  // Accent
-  static const Color accent = Color(0xFFF5F5F5);
-  static const Color accentForeground = Color(0xFF343434);
-
   // Destructive
   static const Color destructive = Color(0xFFE5484D);
   static const Color destructiveForeground = Color(0xFFE5484D);
 
   // Border / Input / Ring
   static const Color border = Color(0xFFE8E8E8);
-  static const Color input = Color(0xFFE8E8E8);
-  static const Color ring = Color(0xFFB4B4B4);
+  static const Color disableBorder = Color(0xFFEDEDED);
 
   // Charts
   static const Color chart1 = Color(0xFFF97316);

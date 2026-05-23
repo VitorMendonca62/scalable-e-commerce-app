@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:scalable_e_commerce_app/core/theme/colors.dart';
 import 'package:scalable_e_commerce_app/core/theme/spacing.dart';
+import 'package:scalable_e_commerce_app/core/theme/typography.dart';
 import 'package:scalable_e_commerce_app/modules/auth/presentation/validators/validators.dart';
 import 'package:scalable_e_commerce_app/shared/widgets/form_button.dart';
 import 'package:scalable_e_commerce_app/shared/widgets/form_input.dart';
@@ -32,15 +32,13 @@ class LoginPage extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: AppColors.accentForeground,
+                    color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.all(AppBorder.radius),
                   ),
                   child: Text(
                     "S",
-                    style: TextStyle(
-                      color: AppColors.muted,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
+                    style: AppTypography.titleLarge.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -48,18 +46,14 @@ class LoginPage extends StatelessWidget {
 
                 Text(
                   "Entrar na sua conta",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.foreground,
+                  style: AppTypography.headlineSmall.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   "Diga suas credencias para acessar",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.mutedForeground,
+                  style: AppTypography.bodyLarge.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: AppThemePage.inputSpacing),
@@ -103,9 +97,8 @@ class LoginPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Text(
                         "ou continue com".toUpperCase(),
-                        style: TextStyle(
-                          color: AppColors.mutedForeground,
-                          fontWeight: FontWeight.w600,
+                        style: AppTypography.labelMedium.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ),
@@ -121,12 +114,12 @@ class LoginPage extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 14),
-                      backgroundColor: AppColors.primaryForeground,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
                       side: BorderSide(
                         width: 1,
-                        color: AppColors.mutedForeground,
+                        color: Theme.of(context).colorScheme.outline,
                       ),
-                      overlayColor: AppColors.foreground,
+                      overlayColor: Theme.of(context).colorScheme.onSecondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(AppBorder.radius),
                       ),
@@ -138,30 +131,27 @@ class LoginPage extends StatelessWidget {
                     ),
                     label: Text(
                       'Continuar com Google',
-                      style: TextStyle(
-                        color: AppColors.foreground,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
+                      style: AppTypography.labelLarge.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
                 ),
                 TextButton(
+                  style: TextButton.styleFrom(overlayColor: Colors.transparent),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Ainda não tem um conta? ",
-                        style: TextStyle(
-                          color: AppColors.mutedForeground,
-                          fontWeight: FontWeight.w600,
+                        style: AppTypography.labelMedium.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         "Criar conta",
-                        style: TextStyle(
-                          color: AppColors.accentForeground,
-                          fontWeight: FontWeight.w600,
+                        style: AppTypography.labelMedium.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ],
