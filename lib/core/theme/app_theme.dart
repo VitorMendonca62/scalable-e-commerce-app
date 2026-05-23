@@ -26,16 +26,18 @@ class AppTheme {
   );
 
   static final ThemeData ligth = ThemeData(
-    scaffoldBackgroundColor: AppColors.primaryForeground,
+    scaffoldBackgroundColor: AppTheme.ligthColorSchema.surface,
     textTheme: AppTypography.textTheme.apply(
       bodyColor: AppTheme.ligthColorSchema.onSurface,
       displayColor: AppTheme.ligthColorSchema.onSurface,
     ),
     colorScheme: AppTheme.ligthColorSchema,
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: AppColors.secondaryForeground,
-      selectionColor: AppColors.secondaryForeground.withValues(alpha: 0.2),
-      selectionHandleColor: AppColors.secondaryForeground,
+      cursorColor: AppTheme.ligthColorSchema.onSecondary,
+      selectionColor: AppTheme.ligthColorSchema.onSecondary.withValues(
+        alpha: 0.2,
+      ),
+      selectionHandleColor: AppTheme.ligthColorSchema.onSecondary,
     ),
     fontFamily: AppTypography.fontFamily,
   );

@@ -16,150 +16,169 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsetsGeometry.symmetric(
-            horizontal: AppThemePage.horizontalPadding,
-            vertical: AppThemePage.verticalPadding,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  constraints: const BoxConstraints(
-                    maxWidth: 48,
-                    maxHeight: 48,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                height: 180,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.onSurfaceVariant,
+                    ],
                   ),
-                  alignment: Alignment.center,
+                ),
+              ),
+              Transform.translate(
+                offset: const Offset(0, -60),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppThemePage.horizontalPadding,
+                    vertical: AppThemePage.verticalPadding,
+                  ),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.all(AppBorder.radius),
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: const BorderRadius.all(Radius.circular(36)),
                   ),
-                  child: Text(
-                    "S",
-                    style: AppTypography.titleLarge.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                Text(
-                  "Entrar na sua conta",
-                  style: AppTypography.headlineSmall.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                Text(
-                  "Diga suas credencias para acessar",
-                  style: AppTypography.bodyLarge.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: AppThemePage.inputSpacing),
-                Form(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      FormInput(
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        labelText: "Email",
-                        hintText: "example@example.com",
-                        validator: emailValidator,
+                      const SizedBox(height: 12),
+                      Text(
+                        "Entrar na sua conta",
+                        style: AppTypography.headlineSmall.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      Text(
+                        "Diga suas credencias para acessar",
+                        style: AppTypography.bodyLarge.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
                       const SizedBox(height: AppThemePage.inputSpacing),
-                      FormInput(
-                        controller: passwordController,
-                        keyboardType: TextInputType.text,
-                        labelText: "Senha",
-                        hintText: "********",
-                        validator: (String? teste) => "awddw",
-                        isPasswordField: true,
+                      Form(
+                        child: Column(
+                          children: [
+                            FormInput(
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              labelText: "Email",
+                              hintText: "example@example.com",
+                              validator: emailValidator,
+                            ),
+                            const SizedBox(height: AppThemePage.inputSpacing),
+                            FormInput(
+                              controller: passwordController,
+                              keyboardType: TextInputType.text,
+                              labelText: "Senha",
+                              hintText: "********",
+                              validator: (String? teste) => "awddw",
+                              isPasswordField: true,
+                            ),
+                            const SizedBox(height: AppThemePage.inputSpacing),
+                            SizedBox(
+                              width: double.infinity,
+                              child: FormButton(
+                                onPressed: () {
+                                  return;
+                                },
+                                text: 'Entrar',
+                              ),
+                            ),
+                            const SizedBox(height: AppThemePage.inputSpacing),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          const Expanded(child: Divider()),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                            ),
+                            child: Text(
+                              "ou continue com".toUpperCase(),
+                              style: AppTypography.labelMedium.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                          const Expanded(child: Divider()),
+                        ],
                       ),
                       const SizedBox(height: AppThemePage.inputSpacing),
                       SizedBox(
                         width: double.infinity,
-                        child: FormButton(
+                        child: OutlinedButton.icon(
                           onPressed: () {
                             return;
                           },
-                          text: 'Entrar',
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.secondary,
+                            side: BorderSide(
+                              width: 1,
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                            overlayColor: Theme.of(
+                              context,
+                            ).colorScheme.onSecondary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(AppBorder.radius),
+                            ),
+                          ),
+                          icon: SvgPicture.asset(
+                            'assets/icons/google_logo.svg',
+                            width: 18,
+                            height: 18,
+                          ),
+                          label: Text(
+                            'Continuar com Google',
+                            style: AppTypography.labelLarge.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: AppThemePage.inputSpacing),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          overlayColor: Colors.transparent,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Ainda não tem um conta? ",
+                              style: AppTypography.labelMedium.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                            Text(
+                              "Criar conta",
+                              style: AppTypography.labelMedium.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onPressed: () {},
+                      ),
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(child: Divider()),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Text(
-                        "ou continue com".toUpperCase(),
-                        style: AppTypography.labelMedium.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ),
-                    Expanded(child: Divider()),
-                  ],
-                ),
-                const SizedBox(height: AppThemePage.inputSpacing),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      return;
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 14),
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      side: BorderSide(
-                        width: 1,
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                      overlayColor: Theme.of(context).colorScheme.onSecondary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(AppBorder.radius),
-                      ),
-                    ),
-                    icon: SvgPicture.asset(
-                      'assets/icons/google_logo.svg',
-                      width: 18,
-                      height: 18,
-                    ),
-                    label: Text(
-                      'Continuar com Google',
-                      style: AppTypography.labelLarge.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(overlayColor: Colors.transparent),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Ainda não tem um conta? ",
-                        style: AppTypography.labelMedium.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      Text(
-                        "Criar conta",
-                        style: AppTypography.labelMedium.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                  onPressed: () {},
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
       ),
