@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final colorSchema = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final loginBloc = context.read<LoginBloc>();
 
     return SafeArea(
@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [colorSchema.primary, colorSchema.onSurfaceVariant],
+                    colors: [colorScheme.primary, colorScheme.onSurfaceVariant],
                   ),
                 ),
               ),
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                     vertical: AppThemePage.verticalPadding,
                   ),
                   decoration: BoxDecoration(
-                    color: colorSchema.surface,
+                    color: colorScheme.surface,
                     borderRadius: const BorderRadius.all(Radius.circular(36)),
                   ),
 
@@ -110,13 +110,13 @@ class _LoginPageState extends State<LoginPage> {
                           Text(
                             "Entrar na sua conta",
                             style: AppTypography.headlineSmall.copyWith(
-                              color: colorSchema.onSurface,
+                              color: colorScheme.onSurface,
                             ),
                           ),
                           Text(
                             "Diga suas credencias para acessar",
                             style: AppTypography.bodyLarge.copyWith(
-                              color: colorSchema.onSurface,
+                              color: colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: AppThemePage.inputSpacing),
@@ -171,7 +171,12 @@ class _LoginPageState extends State<LoginPage> {
                                         'Recuperação de senha não implementada',
                                       );
                                     },
-                                    child: Text('Esqueci a senha'),
+                                    child: Text(
+                                      'Esqueci a senha',
+                                      style: AppTypography.labelLarge.copyWith(
+                                        color: colorScheme.onSurface,
+                                      ),
+                                    ),
                                   ),
                                 ),
 
@@ -188,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                                       width: 16,
                                       height: 16,
                                       child: CircularProgressIndicator(
-                                        color: colorSchema.onPrimary,
+                                        color: colorScheme.onPrimary,
                                         strokeWidth: 2,
                                       ),
                                     ),
@@ -214,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Text(
                                   "ou continue com".toUpperCase(),
                                   style: AppTypography.labelMedium.copyWith(
-                                    color: colorSchema.onSurfaceVariant,
+                                    color: colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ),
@@ -232,12 +237,12 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 14,
                                 ),
-                                backgroundColor: colorSchema.secondary,
+                                backgroundColor: colorScheme.secondary,
                                 side: BorderSide(
                                   width: 1,
-                                  color: colorSchema.outline,
+                                  color: colorScheme.outline,
                                 ),
-                                overlayColor: colorSchema.onSecondary,
+                                overlayColor: colorScheme.onSecondary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                     AppBorder.radius,
@@ -252,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                               label: Text(
                                 'Google',
                                 style: AppTypography.labelLarge.copyWith(
-                                  color: colorSchema.onSurface,
+                                  color: colorScheme.onSurface,
                                 ),
                               ),
                             ),
@@ -267,13 +272,13 @@ class _LoginPageState extends State<LoginPage> {
                                 Text(
                                   "Ainda não tem um conta? ",
                                   style: AppTypography.labelMedium.copyWith(
-                                    color: colorSchema.onSurface,
+                                    color: colorScheme.onSurface,
                                   ),
                                 ),
                                 Text(
                                   "Criar conta",
                                   style: AppTypography.labelMedium.copyWith(
-                                    color: colorSchema.onSurface,
+                                    color: colorScheme.onSurface,
                                   ),
                                 ),
                               ],

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:scalable_e_commerce_app/core/theme/colors.dart';
+import 'package:scalable_e_commerce_app/core/theme/typography.dart';
 
 class _AnimatedSnackbar extends StatefulWidget {
   final String title;
@@ -69,7 +70,7 @@ class _AnimatedSnackbarState extends State<_AnimatedSnackbar> {
               children: [
                 Text(
                   widget.title,
-                  style: TextStyle(
+                  style: AppTypography.titleSmall.copyWith(
                     color: widget.colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
@@ -77,7 +78,9 @@ class _AnimatedSnackbarState extends State<_AnimatedSnackbar> {
                 const SizedBox(height: 4),
                 Text(
                   widget.message,
-                  style: TextStyle(color: widget.colorScheme.onSurface),
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: widget.colorScheme.onSurface,
+                  ),
                 ),
               ],
             ),
