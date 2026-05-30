@@ -36,19 +36,24 @@ class LoginRemoteDatasource {
   Exception _handleError(DioException err) {
     final statusCode = err.response?.statusCode;
     final data = err.response?.data;
+    final body = data is Map<String, dynamic>
+        ? data
+        : const <String, dynamic>{};
+    final message = body['message']?.toString();
 
     switch (statusCode) {
       case 400:
+        final field = (body['data'] is Map<String, dynamic>)
+            ? (body['data'] as Map<String, dynamic>)['field']?.toString()
+            : null;
         return InvalidFieldException(
-          field: data['data']['field'],
-          message: data['message'],
+          field: field ?? 'unknown',
+          message: message ?? 'Requisição inválida',
         );
       case 401:
-        return UnauthorizedException(message: data['message']);
-
+        return UnauthorizedException(message: message ?? 'Não autorizado');
       case 500:
-        return ServerException(message: data['message']);
-
+        return ServerException(message: message ?? 'Erro no servidor');
       default:
         return UnexpectedException();
     }

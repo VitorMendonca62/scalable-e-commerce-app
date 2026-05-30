@@ -44,9 +44,9 @@ class FormButton extends StatelessWidget {
         ),
       ),
       child: isLoading
-          ? labelWidget
+          ? (labelWidget ?? const SizedBox.shrink())
           : Text(
-              labelString!,
+              labelString ?? '',
               style: AppTypography.labelLarge.copyWith(
                 color: colorScheme.onPrimary,
               ),

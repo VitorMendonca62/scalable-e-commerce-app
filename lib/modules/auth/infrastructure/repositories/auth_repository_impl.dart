@@ -20,14 +20,17 @@ class AuthRepositoryImpl implements AuthRepository {
         LoginRequestDTO(email: email, password: password),
       );
 
-      final dto = response.data!;
+      final dto = response.data;
+      if (dto == null) {
+        return Left(UnexpectedFailure(message: response.message));
+      }
 
       final entity = AuthTokens(
         accessToken: dto.accessToken,
         refreshToken: dto.refreshToken,
       );
 
-      localDatasource.saveTokens(entity);
+      await localDatasource.saveTokens(entity);
 
       return Right(null);
     } on InvalidFieldException catch (e) {
@@ -46,14 +49,17 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await remoteDatasource.googleLogin();
 
-      final dto = response.data!;
+      final dto = response.data;
+      if (dto == null) {
+        return Left(UnexpectedFailure(message: response.message));
+      }
 
       final entity = AuthTokens(
         accessToken: dto.accessToken,
         refreshToken: dto.refreshToken,
       );
 
-      localDatasource.saveTokens(entity);
+      await localDatasource.saveTokens(entity);
 
       return Right(null);
     } on UnauthorizedException catch (e) {

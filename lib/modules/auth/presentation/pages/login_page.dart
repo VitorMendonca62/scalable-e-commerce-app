@@ -17,12 +17,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController(
-    text: 'vitor2@gmail.com',
-  );
-  final TextEditingController passwordController = TextEditingController(
-    text: "@Vh123456",
-  );
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
@@ -33,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -114,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Text(
-                            "Diga suas credencias para acessar",
+                            "Diga suas credenciais para acessar",
                             style: AppTypography.bodyLarge.copyWith(
                               color: colorScheme.onSurface,
                             ),
@@ -270,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Ainda não tem um conta? ",
+                                  "Ainda não tem uma conta? ",
                                   style: AppTypography.labelMedium.copyWith(
                                     color: colorScheme.onSurface,
                                   ),
