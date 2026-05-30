@@ -10,15 +10,23 @@ class FormInput extends StatefulWidget {
     required this.hintText,
     required this.validator,
     required this.keyboardType,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
     this.isPasswordField = false,
     this.isDisabled = false,
     this.minLines = 1,
     this.maxLines = 1,
+    this.errorText,
   });
 
   final TextEditingController controller;
   final String labelText;
   final String hintText;
+  final String? errorText;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onFieldSubmitted;
   final String? Function(String?) validator;
   final bool isPasswordField;
   final TextInputType keyboardType;
@@ -41,23 +49,26 @@ class _FormInputState extends State<FormInput> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           widget.labelText,
           style: AppTypography.titleSmall.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
+            color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 4),
         TextFormField(
           controller: widget.controller,
-          style: AppTypography.bodyLarge.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+          style: AppTypography.bodyLarge.copyWith(color: colorScheme.onSurface),
           obscureText: obscureText,
           validator: widget.validator,
+          focusNode: widget.focusNode,
+          textInputAction: widget.textInputAction,
+          onFieldSubmitted: widget.onFieldSubmitted,
           keyboardType: widget.keyboardType,
           enabled: !widget.isDisabled,
           minLines: widget.minLines,
@@ -74,7 +85,7 @@ class _FormInputState extends State<FormInput> {
                     },
                     icon: Icon(
                       obscureText ? Icons.visibility_off : Icons.visibility,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   )
                 : null,
@@ -85,43 +96,45 @@ class _FormInputState extends State<FormInput> {
             ),
             isDense: true,
 
+            errorText: widget.errorText,
+
             hintText: widget.hintText,
             hintStyle: AppTypography.bodyMedium.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              color: colorScheme.onSurfaceVariant,
             ),
 
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.outline,
+                color: colorScheme.outline,
                 width: AppBorder.width,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.primary,
+                color: colorScheme.primary,
                 width: AppBorder.focusedWidth,
               ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.error,
+                color: colorScheme.error,
                 width: AppBorder.width,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.onError,
+                color: colorScheme.onError,
                 width: AppBorder.focusedWidth,
               ),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(AppBorder.radius),
               borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.outlineVariant,
+                color: colorScheme.outlineVariant,
                 width: AppBorder.width,
               ),
             ),

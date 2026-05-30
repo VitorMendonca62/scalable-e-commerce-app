@@ -3,13 +3,14 @@ import 'package:scalable_e_commerce_app/core/constants/email.dart';
 import 'package:scalable_e_commerce_app/core/constants/password.dart';
 import 'package:scalable_e_commerce_app/modules/auth/presentation/helpers/password_helper.dart';
 
-final emailValidator = ValidationBuilder()
-    .required(EmailErrorMessages.requiredError)
-    .email(EmailErrorMessages.invalidError)
-    .build();
+final emailValidator =
+    ValidationBuilder(requiredMessage: EmailErrorMessages.requiredError)
+        .required(EmailErrorMessages.requiredError)
+        .email(EmailErrorMessages.invalidError)
+        .build();
 
-String? Function(String?) assemblePasswordValidator(String type) {
-  return ValidationBuilder()
+String? Function(String?) assemblePasswordValidator(String? type) {
+  return ValidationBuilder(requiredMessage: PasswordErrorMessages.requiredError)
       .required(
         PasswordHelper.addPrefix(PasswordErrorMessages.requiredError, type),
       )
@@ -18,30 +19,30 @@ String? Function(String?) assemblePasswordValidator(String type) {
         PasswordHelper.addPrefix(PasswordErrorMessages.minLengthError, type),
       )
       .regExp(
-        RegExp(r'[A-Z]'),
+        RegExp(PasswordConstants.upperCasePattern),
         PasswordHelper.addPrefix(
-          PasswordErrorMessages.weakPassowordError,
+          PasswordErrorMessages.weakPasswordUpperCase,
           type,
         ),
       )
       .regExp(
-        RegExp(r'[a-z]'),
+        RegExp(PasswordConstants.lowerCasePattern),
         PasswordHelper.addPrefix(
-          PasswordErrorMessages.weakPassowordError,
+          PasswordErrorMessages.weakPasswordLowerCase,
           type,
         ),
       )
       .regExp(
-        RegExp(r'[0-9]'),
+        RegExp(PasswordConstants.numberPattern),
         PasswordHelper.addPrefix(
-          PasswordErrorMessages.weakPassowordError,
+          PasswordErrorMessages.weakPasswordNumber,
           type,
         ),
       )
       .regExp(
-        RegExp(r'[!@#$%^&*(),.?":{}|<>]'),
+        RegExp(PasswordConstants.specialCharacterPattern),
         PasswordHelper.addPrefix(
-          PasswordErrorMessages.weakPassowordError,
+          PasswordErrorMessages.weakPasswordSpecialCharacter,
           type,
         ),
       )

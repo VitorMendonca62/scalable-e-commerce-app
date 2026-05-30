@@ -1,19 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scalable_e_commerce_app/core/theme/spacing.dart';
 import 'package:scalable_e_commerce_app/core/theme/typography.dart';
+import 'package:scalable_e_commerce_app/modules/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:scalable_e_commerce_app/modules/auth/presentation/validators/validators.dart';
+import 'package:scalable_e_commerce_app/shared/widgets/app_snackbar.dart';
 import 'package:scalable_e_commerce_app/shared/widgets/form_button.dart';
 import 'package:scalable_e_commerce_app/shared/widgets/form_input.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController(
+    text: 'vitor2@gmail.com',
+  );
+  final TextEditingController passwordController = TextEditingController(
+    text: "@Vh123456",
+  );
+
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
+  void handleSubmited() {
+    AppSnackbar.success(context, "Sucesso", 'Usuário autenticado');
+  }
+
+  void handleError(String message) {
+    AppSnackbar.error(context, "Erro", message);
+  }
+
+  handleLogin() {
+    context.read<LoginBloc>().add(
+      LoginRequested(
+        email: emailController.text,
+        password: passwordController.text,
+      ),
+    );
+  }
+
+  handleLoginWithGoogle() {
+    context.read<LoginBloc>().add(LoginWithGoogleRequested());
+  }
 
   @override
   Widget build(BuildContext context) {
+    final colorSchema = Theme.of(context).colorScheme;
+    final loginBloc = context.read<LoginBloc>();
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -26,10 +74,7 @@ class LoginPage extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.onSurfaceVariant,
-                    ],
+                    colors: [colorSchema.primary, colorSchema.onSurfaceVariant],
                   ),
                 ),
               ),
@@ -42,138 +87,200 @@ class LoginPage extends StatelessWidget {
                     vertical: AppThemePage.verticalPadding,
                   ),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
+                    color: colorSchema.surface,
                     borderRadius: const BorderRadius.all(Radius.circular(36)),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 12),
-                      Text(
-                        "Entrar na sua conta",
-                        style: AppTypography.headlineSmall.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      Text(
-                        "Diga suas credencias para acessar",
-                        style: AppTypography.bodyLarge.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      const SizedBox(height: AppThemePage.inputSpacing),
-                      Form(
-                        child: Column(
-                          children: [
-                            FormInput(
-                              controller: emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              labelText: "Email",
-                              hintText: "example@example.com",
-                              validator: emailValidator,
-                            ),
-                            const SizedBox(height: AppThemePage.inputSpacing),
-                            FormInput(
-                              controller: passwordController,
-                              keyboardType: TextInputType.text,
-                              labelText: "Senha",
-                              hintText: "********",
-                              validator: (String? teste) => "awddw",
-                              isPasswordField: true,
-                            ),
-                            const SizedBox(height: AppThemePage.inputSpacing),
-                            SizedBox(
-                              width: double.infinity,
-                              child: FormButton(
-                                onPressed: () {
-                                  return;
-                                },
-                                text: 'Entrar',
-                              ),
-                            ),
-                            const SizedBox(height: AppThemePage.inputSpacing),
-                          ],
-                        ),
-                      ),
-                      Row(
+
+                  child: BlocConsumer<LoginBloc, LoginState>(
+                    bloc: loginBloc,
+                    listener: (context, state) {
+                      if (state is LoginFailureState) {
+                        handleError(state.exception);
+                      }
+
+                      if (state is LoginSuccessState) {
+                        handleSubmited();
+                      }
+                    },
+                    builder: (context, state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Expanded(child: Divider()),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0,
+                          const SizedBox(height: 12),
+                          Text(
+                            "Entrar na sua conta",
+                            style: AppTypography.headlineSmall.copyWith(
+                              color: colorSchema.onSurface,
                             ),
-                            child: Text(
-                              "ou continue com".toUpperCase(),
-                              style: AppTypography.labelMedium.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
+                          ),
+                          Text(
+                            "Diga suas credencias para acessar",
+                            style: AppTypography.bodyLarge.copyWith(
+                              color: colorSchema.onSurface,
+                            ),
+                          ),
+                          const SizedBox(height: AppThemePage.inputSpacing),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                FormInput(
+                                  controller: emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  labelText: "Email",
+                                  hintText: "example@example.com",
+                                  validator: emailValidator,
+                                  isDisabled: state is LoginLoadingState,
+                                  focusNode: _emailFocusNode,
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (_) =>
+                                      _passwordFocusNode.requestFocus(),
+                                  errorText:
+                                      state is LoginFailureFieldState &&
+                                          state.field == 'email'
+                                      ? state.exception
+                                      : null,
+                                ),
+                                const SizedBox(
+                                  height: AppThemePage.inputSpacing,
+                                ),
+                                FormInput(
+                                  controller: passwordController,
+                                  keyboardType: TextInputType.text,
+                                  labelText: "Senha",
+                                  hintText: "********",
+                                  validator: assemblePasswordValidator(null),
+                                  isPasswordField: true,
+                                  isDisabled: state is LoginLoadingState,
+                                  focusNode: _passwordFocusNode,
+                                  textInputAction: TextInputAction.done,
+                                  onFieldSubmitted: (_) => handleLogin(),
+                                  errorText:
+                                      state is LoginFailureFieldState &&
+                                          state.field == 'password'
+                                      ? state.exception
+                                      : null,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      AppSnackbar.warning(
+                                        context,
+                                        'Em breve',
+                                        'Recuperação de senha não implementada',
+                                      );
+                                    },
+                                    child: Text('Esqueci a senha'),
+                                  ),
+                                ),
+
+                                const SizedBox(
+                                  height: AppThemePage.inputSpacing - 4,
+                                ),
+
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: FormButton(
+                                    labelIsWidget: (state is LoginLoadingState),
+                                    labelString: "Entrar",
+                                    labelWidget: SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        color: colorSchema.onPrimary,
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    onPressed: handleLogin,
+                                    formKey: _formKey,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: AppThemePage.inputSpacing,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              const Expanded(child: Divider()),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                ),
+                                child: Text(
+                                  "ou continue com".toUpperCase(),
+                                  style: AppTypography.labelMedium.copyWith(
+                                    color: colorSchema.onSurfaceVariant,
+                                  ),
+                                ),
+                              ),
+                              const Expanded(child: Divider()),
+                            ],
+                          ),
+                          const SizedBox(height: AppThemePage.inputSpacing),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                handleLoginWithGoogle();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                backgroundColor: colorSchema.secondary,
+                                side: BorderSide(
+                                  width: 1,
+                                  color: colorSchema.outline,
+                                ),
+                                overlayColor: colorSchema.onSecondary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    AppBorder.radius,
+                                  ),
+                                ),
+                              ),
+                              icon: SvgPicture.asset(
+                                'assets/icons/google_logo.svg',
+                                width: 18,
+                                height: 18,
+                              ),
+                              label: Text(
+                                'Google',
+                                style: AppTypography.labelLarge.copyWith(
+                                  color: colorSchema.onSurface,
+                                ),
                               ),
                             ),
                           ),
-                          const Expanded(child: Divider()),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              overlayColor: Colors.transparent,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Ainda não tem um conta? ",
+                                  style: AppTypography.labelMedium.copyWith(
+                                    color: colorSchema.onSurface,
+                                  ),
+                                ),
+                                Text(
+                                  "Criar conta",
+                                  style: AppTypography.labelMedium.copyWith(
+                                    color: colorSchema.onSurface,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onPressed: () {},
+                          ),
                         ],
-                      ),
-                      const SizedBox(height: AppThemePage.inputSpacing),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            return;
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.secondary,
-                            side: BorderSide(
-                              width: 1,
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
-                            overlayColor: Theme.of(
-                              context,
-                            ).colorScheme.onSecondary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(AppBorder.radius),
-                            ),
-                          ),
-                          icon: SvgPicture.asset(
-                            'assets/icons/google_logo.svg',
-                            width: 18,
-                            height: 18,
-                          ),
-                          label: Text(
-                            'Continuar com Google',
-                            style: AppTypography.labelLarge.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          overlayColor: Colors.transparent,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Ainda não tem um conta? ",
-                              style: AppTypography.labelMedium.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                            Text(
-                              "Criar conta",
-                              style: AppTypography.labelMedium.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
               ),

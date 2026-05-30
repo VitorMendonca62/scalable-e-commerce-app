@@ -1,5 +1,5 @@
 class PasswordHelper {
-  static String addPrefix(String text, String type) {
+  static String addPrefix(String text, String? type) {
     if (type == 'new') {
       return text.replaceAll('senha', 'nova senha');
     }
