@@ -63,7 +63,11 @@ class _FormInputState extends State<FormInput> {
         SizedBox(height: 4),
         TextFormField(
           controller: widget.controller,
-          style: AppTypography.bodyLarge.copyWith(color: colorScheme.onSurface),
+          style: AppTypography.bodyLarge.copyWith(
+            color: widget.isDisabled
+                ? colorScheme.onSurface.withValues(alpha: 0.7)
+                : colorScheme.onSurface,
+          ),
           obscureText: obscureText,
           validator: widget.validator,
           focusNode: widget.focusNode,
@@ -95,6 +99,9 @@ class _FormInputState extends State<FormInput> {
               vertical: 8 + (widget.isPasswordField ? 0 : 6.5),
             ),
             isDense: true,
+
+            filled: widget.isDisabled,
+            fillColor: colorScheme.surfaceContainer,
 
             errorText: widget.errorText,
 

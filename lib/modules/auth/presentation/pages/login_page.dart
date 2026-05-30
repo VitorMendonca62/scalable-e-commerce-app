@@ -36,11 +36,11 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void handleSubmited() {
+  void handleSubmited(BuildContext context) {
     AppSnackbar.success(context, "Sucesso", 'Usuário autenticado');
   }
 
-  void handleError(String message) {
+  void handleError(BuildContext context, String message) {
     AppSnackbar.error(context, "Erro", message);
   }
 
@@ -95,11 +95,11 @@ class _LoginPageState extends State<LoginPage> {
                     bloc: loginBloc,
                     listener: (context, state) {
                       if (state is LoginFailureState) {
-                        handleError(state.exception);
+                        handleError(context, state.exception);
                       }
 
                       if (state is LoginSuccessState) {
-                        handleSubmited();
+                        handleSubmited(context);
                       }
                     },
                     builder: (context, state) {
@@ -182,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                                 SizedBox(
                                   width: double.infinity,
                                   child: FormButton(
-                                    labelIsWidget: (state is LoginLoadingState),
+                                    isLoading: state is LoginLoadingState,
                                     labelString: "Entrar",
                                     labelWidget: SizedBox(
                                       width: 16,
@@ -192,7 +192,9 @@ class _LoginPageState extends State<LoginPage> {
                                         strokeWidth: 2,
                                       ),
                                     ),
-                                    onPressed: handleLogin,
+                                    onPressed: state is LoginLoadingState
+                                        ? () {}
+                                        : handleLogin,
                                     formKey: _formKey,
                                   ),
                                 ),

@@ -7,14 +7,14 @@ class FormButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.formKey,
-    required this.labelIsWidget,
+    required this.isLoading,
     this.labelString,
     this.labelWidget,
   });
 
   final VoidCallback onPressed;
   final GlobalKey<FormState> formKey;
-  final bool labelIsWidget;
+  final bool isLoading;
   final String? labelString;
   final Widget? labelWidget;
 
@@ -34,14 +34,16 @@ class FormButton extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(vertical: 14),
-        backgroundColor: colorScheme.primary,
+        backgroundColor: isLoading
+            ? colorScheme.primary.withValues(alpha: 0.7)
+            : colorScheme.primary,
         side: BorderSide(width: 0, color: colorScheme.outline),
         overlayColor: colorScheme.onSecondary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(AppBorder.radius),
         ),
       ),
-      child: labelIsWidget
+      child: isLoading
           ? labelWidget
           : Text(
               labelString!,

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:scalable_e_commerce_app/core/theme/colors.dart';
 
@@ -37,7 +39,6 @@ class _AnimatedSnackbarState extends State<_AnimatedSnackbar> {
       if (!mounted) return;
 
       setState(() => visible = false);
-
       await Future.delayed(const Duration(milliseconds: 300));
 
       widget.onDismiss();
@@ -88,44 +89,105 @@ class _AnimatedSnackbarState extends State<_AnimatedSnackbar> {
 }
 
 class AppSnackbar {
+  static final Queue<_SnackbarRequest> _queue = Queue<_SnackbarRequest>();
+  static bool _isShowing = false;
+
   static void success(BuildContext context, String title, String message) {
-    _show(context, title, message, Theme.of(context).colorScheme.outline);
+    _enqueue(
+      context: context,
+      title: title,
+      message: message,
+      backgroundColor: Theme.of(context).colorScheme.outline,
+    );
   }
 
   static void error(BuildContext context, String title, String message) {
-    _show(context, title, message, AppColors.destructiveForeground);
+    _enqueue(
+      context: context,
+      title: title,
+      message: message,
+      backgroundColor: AppColors.destructiveForeground,
+    );
   }
 
   static void warning(BuildContext context, String title, String message) {
-    _show(context, title, message, AppColors.chart4);
+    _enqueue(
+      context: context,
+      title: title,
+      message: message,
+      backgroundColor: AppColors.chart4,
+    );
   }
 
-  static void _show(
-    BuildContext context,
-    String title,
-    String message,
-    Color backgroundColor,
-  ) {
+  static void _enqueue({
+    required BuildContext context,
+    required String title,
+    required String message,
+    required Color backgroundColor,
+  }) {
     final overlay = Overlay.of(context);
 
-    late OverlayEntry entry;
-    final colorScheme = Theme.of(context).colorScheme;
+    _queue.add(
+      _SnackbarRequest(
+        overlay: overlay,
+        title: title,
+        message: message,
+        backgroundColor: backgroundColor,
+        colorScheme: Theme.of(context).colorScheme,
+        top: MediaQuery.of(context).padding.top + 50,
+      ),
+    );
 
+    _showNext();
+  }
+
+  static void _showNext() {
+    if (_isShowing || _queue.isEmpty) return;
+
+    _isShowing = true;
+    final request = _queue.removeFirst();
+
+    late OverlayEntry entry;
     entry = OverlayEntry(
       builder: (_) => Positioned(
-        top: MediaQuery.of(context).padding.top + 16,
+        top: request.top,
         left: 16,
         right: 16,
         child: _AnimatedSnackbar(
-          title: title,
-          message: message,
-          colorScheme: colorScheme,
-          backgroundColor: backgroundColor,
-          onDismiss: () => entry.remove(),
+          title: request.title,
+          message: request.message,
+          colorScheme: request.colorScheme,
+          backgroundColor: request.backgroundColor,
+          onDismiss: () {
+            if (entry.mounted) {
+              entry.remove();
+            }
+
+            _isShowing = false;
+            _showNext();
+          },
         ),
       ),
     );
 
-    overlay.insert(entry);
+    request.overlay.insert(entry);
   }
+}
+
+class _SnackbarRequest {
+  final OverlayState overlay;
+  final String title;
+  final String message;
+  final Color backgroundColor;
+  final ColorScheme colorScheme;
+  final double top;
+
+  const _SnackbarRequest({
+    required this.overlay,
+    required this.title,
+    required this.message,
+    required this.backgroundColor,
+    required this.colorScheme,
+    required this.top,
+  });
 }
